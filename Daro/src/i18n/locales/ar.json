@@ -1,0 +1,171 @@
+{
+  "common": {
+    "night": "الليلة",
+    "nightsUnit": "ليلة",
+    "loading": "جارٍ التحميل",
+    "noMore": "لا يوجد المزيد",
+    "save": "حفظ",
+    "clear": "مسح",
+    "cancel": "إلغاء",
+    "worldwide": "الجزائر",
+    "chooseWilaya": "اختر الولاية",
+    "chooseCommune": "اختر البلدية",
+    "searchWilaya": "ابحث عن ولاية",
+    "searchCommune": "ابحث عن بلدية",
+    "currency": "دج",
+    "developing": "قيد التطوير"
+  },
+  "tabs": {
+    "search": "استكشاف",
+    "wishlists": "المفضلة",
+    "trips": "رحلاتي",
+    "inbox": "الرسائل",
+    "profile": "حسابي",
+    "login": "تسجيل الدخول"
+  },
+  "home": {
+    "searchPlaceholder": "المعالم / العنوان / كلمة مفتاحية",
+    "searchButton": "ابحث عن سكن",
+    "noMore": "لا يوجد المزيد"
+  },
+  "category": {
+    "all": "الكل",
+    "selectInterest": "اختر ما يثير اهتمامك"
+  },
+  "features": {
+    "superhost": "مضيف رائع",
+    "nearMetro": "قريب من وسط المدينة",
+    "freeParking": "موقف مجاني",
+    "kitchen": "يمكن الطهي",
+    "selfCheckIn": "دخول ذاتي",
+    "heating": "تدفئة"
+  },
+  "listingCard": {
+    "guestFavorite": "مفضل الضيوف",
+    "quietPlace": "\"مكان هادئ جدًا\"",
+    "reviewsCount": "({{count}} تقييم)"
+  },
+  "filterBar": {
+    "guests": "الضيوف",
+    "filters": "التصفية"
+  },
+  "filterHeader": {
+    "placeholder": "المعالم / العنوان / كلمة مفتاحية"
+  },
+  "calendar": {
+    "selectDate": "اختر التاريخ",
+    "shortTerm": "إقامة قصيرة",
+    "longTerm": "إقامة شهرية",
+    "inDevelopment": "قيد التطوير",
+    "checkInCheckOut": "تاريخ الدخول والخروج",
+    "nightsCount": "{{count}} ليلة",
+    "today": "اليوم"
+  },
+  "guest": {
+    "selectGuests": "عدد الضيوف",
+    "adults": "بالغون",
+    "adultsDesc": "13 سنة فأكثر",
+    "children": "أطفال",
+    "childrenDesc": "من 2 إلى 12 سنة",
+    "infants": "رضّع",
+    "infantsDesc": "أقل من سنتين",
+    "guestsCount": "{{count}} ضيف",
+    "infantsCount": "{{count}} رضيع",
+    "placeholder": "عدد الضيوف"
+  },
+  "detail": {
+    "yourHost": "مضيفك",
+    "host": "مضيف",
+    "responseRate": "معدل الرد",
+    "listingsCount": "عدد الإعلانات",
+    "yearsHosting": "سنوات الاستضافة",
+    "overview": "نظرة عامة على السكن",
+    "description": "وصف السكن",
+    "bedrooms": "{{count}} غرفة نوم",
+    "beds": "{{count}} سرير",
+    "bathrooms": "{{count}} حمام",
+    "guestsCapacity": "يتسع لـ {{count}} أشخاص",
+    "checkAvailability": "التحقق من التوفر",
+    "reserve": "احجز الآن",
+    "roomType": "غرفة خاصة في شقة سكنية"
+  },
+  "reservation": {
+    "title": "تأكيد الحجز",
+    "checkIn": "تاريخ الدخول",
+    "checkOut": "تاريخ الخروج",
+    "guests": "عدد الضيوف",
+    "guestsUnit": "{{count}} شخص",
+    "total": "السعر الإجمالي ({{currency}})",
+    "nightsPrice": "سعر {{count}} ليلة هو",
+    "pay": "الدفع",
+    "success": "تم الحجز بنجاح"
+  },
+  "trips": {
+    "title": "رحلاتي",
+    "host": "المضيف: {{name}}",
+    "noTrips": "لا توجد معلومات عن رحلات",
+    "noTripsYet": "لا توجد رحلات بعد",
+    "noTripsDesc": "عندما تكون جاهزًا لتخطيط رحلتك القادمة، سنكون هنا لمساعدتك"
+  },
+  "wishlists": {
+    "title": "المفضلة",
+    "edit": "تعديل",
+    "itemsCount": "{{count}} عنصر في المفضلة",
+    "createFirst": "أنشئ أول قائمة مفضلة لديك",
+    "createFirstDesc": "أثناء البحث، اضغط على أيقونة القلب لحفظ ما يعجبك من سكن أو تجربة إلى المفضلة.",
+    "loginToView": "سجّل الدخول لعرض المفضلة",
+    "loginToViewDesc": "بعد تسجيل الدخول، يمكنك إنشاء المفضلة أو عرضها أو تعديلها",
+    "addToWishlist": "إضافة إلى المفضلة",
+    "createWishlist": "إنشاء قائمة مفضلة",
+    "create": "إنشاء"
+  },
+  "inbox": {
+    "title": "الرسائل",
+    "noMessages": "لا توجد رسائل جديدة",
+    "noMessagesDesc": "عندما تتواصل مع مضيف أو ترسل طلب حجز، ستظهر رسائلك هنا",
+    "loginToView": "سجّل الدخول لعرض الرسائل",
+    "loginToViewDesc": "بعد تسجيل الدخول، ستجد هنا رسائل المضيفين"
+  },
+  "profile": {
+    "title": "حسابي",
+    "guestTitle": "حسابك",
+    "guestSubtitle": "سجّل الدخول الآن لتخطيط رحلتك القادمة",
+    "login": "تسجيل الدخول",
+    "noAccount": "ليس لديك حساب؟",
+    "register": "إنشاء حساب",
+    "showProfile": "عرض الملف الشخصي",
+    "settings": "الإعدادات",
+    "personalInfo": "المعلومات الشخصية",
+    "loginSecurity": "تسجيل الدخول والأمان",
+    "paymentsPayouts": "الدفعات والمدفوعات",
+    "notifications": "الإشعارات",
+    "language": "اللغة",
+    "about": "حول",
+    "projectLink": "رابط المشروع",
+    "logout": "تسجيل الخروج"
+  },
+  "login": {
+    "title": "تسجيل الدخول أو إنشاء حساب",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "continue": "متابعة",
+    "or": "أو",
+    "google": "المتابعة باستخدام حساب Google"
+  },
+  "toast": {
+    "savedTo": "تم الحفظ في {{name}}",
+    "removedFrom": "تم الحذف من {{name}}",
+    "change": "تغيير"
+  },
+  "notFound": {
+    "title": "عذرًا!",
+    "message": "هذه الصفحة غير موجودة.",
+    "goHome": "العودة إلى الصفحة الرئيسية"
+  },
+  "language": {
+    "title": "اللغة",
+    "ar": "العربية",
+    "en": "English",
+    "fr": "Français"
+  }
+}
