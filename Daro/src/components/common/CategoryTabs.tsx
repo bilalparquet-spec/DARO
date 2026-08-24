@@ -1,0 +1,305 @@
+import { Ionicons } from '@expo/vector-icons';
+import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { Category } from '@prisma/client';
+import * as Haptics from 'expo-haptics';
+import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { FC, useRef } from 'react';
+import ContentLoader, { Rect, Circle } from 'react-content-loader/native';
+import { useTranslation } from 'react-i18next';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  View,
+  ViewStyle,
+  Pressable,
+  Platform
+} from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import Colors from '../../constants/Colors';
+
+import { getFontFamily } from '@/constants/Fonts';
+
+export interface CategoryItem {
+  name: string;
+  icon: string;
+  img: string;
+  color: string;
+}
+
+interface CategoryTabsProps {
+  category: string;
+  categoryList: Category[];
+  isLoading?: boolean;
+  onChange?: (category: string) => void;
+  style?: ViewStyle;
+}
+
+const CategoryCard: FC<
+  CategoryItem & { style?: ViewStyle; active?: boolean; onPress: () => void }
+> = ({ name, icon, img, color, style, active, onPress }) => {
+  const { t } = useTranslation();
+  const label = name === 'all' ? t('category.all') : name;
+
+  return (
+    <LinearGradient
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0.8, y: 0.8 }}
+      colors={[color, '#fff']}
+      style={[style, cardStyles.container, active && cardStyles.active]}
+    >
+      <Pressable onPress={onPress}>
+        <View style={cardStyles.header}>
+          <Text>{label}</Text>
+          <Ionicons name={icon as any} size={16} />
+        </View>
+        <Image contentFit="cover" style={cardStyles.img} source={{ uri: img }} />
+      </Pressable>
+    </LinearGradient>
+  );
+};
+
+const cardStyles = StyleSheet.create({
+  active: {
+    borderColor: '#333'
+  },
+  container: {
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: Colors.borderColor,
+    padding: 6
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  img: {
+    width: '100%',
+    height: 80,
+    backgroundColor: '#eee',
+    marginTop: 20,
+    borderRadius: 6
+  }
+});
+
+const CategoryTabs: FC<CategoryTabsProps> = ({
+  category,
+  categoryList,
+  isLoading,
+  style,
+  onChange
+}) => {
+  const itemsRef = useRef<{ [category: string]: TouchableOpacity | null }>({});
+  const scrollRef = useRef<ScrollView>(null);
+  const sheetRef = useRef<BottomSheetModal>(null);
+  const { top } = useSafeAreaInsets();
+  const { t, i18n } = useTranslation();
+
+  const onCategoryPress = (category: string) => {
+    const currentTab = itemsRef.current[category];
+    onChange?.(category);
+
+    if (scrollRef.current && currentTab) {
+      // measure does not return x value on Android
+      // @ts-ignore
+      currentTab?.measureLayout(scrollRef.current, x => {
+        scrollRef.current?.scrollTo({
+          x: x - 16,
+          y: 0,
+          animated: true
+        });
+      });
+    }
+
+    if (Platform.OS !== 'web') {
+      // haptic feedback on tap
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    }
+  };
+
+  const handleViewMorePress = () => {
+    sheetRef.current?.present();
+  };
+
+  const handleCloseSheet = () => {
+    sheetRef.current?.dismiss();
+  };
+
+  const handleCategoryCardPress = (category: string) => {
+    onCategoryPress(category);
+    handleCloseSheet();
+  };
+
+  return (
+    <View style={[styles.wrap, style]}>
+      <ScrollView
+        ref={scrollRef}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.container}
+      >
+        {isLoading ? (
+          <>
+            {new Array(8).fill(0).map((_item, index) => (
+              <ContentLoader
+                key={index}
+                speed={2}
+                width={60}
+                height={45}
+                viewBox="0 0 65 45"
+                backgroundColor="#ebeaea"
+                foregroundColor="#dedede"
+              >
+                <Circle cx="30" cy="11" r="10" />
+                <Rect x="5" y="28" rx="4" ry="4" width="50" height="12" />
+              </ContentLoader>
+            ))}
+          </>
+        ) : (
+          <>
+            {categoryList.map(item => (
+              <TouchableOpacity
+                ref={el => (itemsRef.current[item.name] = el)}
+                key={item.name}
+                style={styles.tab}
+                onPress={() => onCategoryPress(item.name)}
+              >
+                <Ionicons
+                  name={item.icon as any}
+                  size={20}
+                  style={[styles.tabIcon, category === item.name ? styles.activeIcon : null]}
+                />
+                <View style={[category === item.name ? styles.activeTab : null, { flex: 1 }]}>
+                  <Text style={[styles.tabText, category === item.name ? styles.activeText : null, { fontFamily: getFontFamily('semiBold', i18n.language) }]}>
+                    {item.name === 'all' ? t('category.all') : item.name}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </>
+        )}
+      </ScrollView>
+      <View style={styles.more}>
+        <TouchableOpacity
+          disabled={isLoading}
+          activeOpacity={0.9}
+          style={styles.moreIcon}
+          onPress={handleViewMorePress}
+        >
+          <Ionicons name="chevron-down" size={22} color="#222222" />
+        </TouchableOpacity>
+      </View>
+
+      <BottomSheetModal
+        ref={sheetRef}
+        handleComponent={() => (
+          <View style={styles.handle}>
+            <Ionicons size={22} name="close" onPress={handleCloseSheet} />
+            <Text style={{ fontSize: 16, paddingLeft: 10 }}>{t('category.selectInterest')}</Text>
+          </View>
+        )}
+        enablePanDownToClose
+        topInset={top}
+        index={0}
+        snapPoints={['100%']}
+      >
+        <BottomSheetScrollView
+          contentContainerStyle={{
+            padding: 10,
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            rowGap: 20
+          }}
+        >
+          {categoryList.map(item => (
+            <CategoryCard
+              key={item.name}
+              active={category === item.name}
+              onPress={() => handleCategoryCardPress(item.name)}
+              {...item}
+              style={{
+                flexBasis: '48%'
+              }}
+            />
+          ))}
+        </BottomSheetScrollView>
+      </BottomSheetModal>
+    </View>
+  );
+};
+
+export default CategoryTabs;
+
+const styles = StyleSheet.create({
+  handle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.borderColor
+  },
+  wrap: {
+    paddingTop: 14,
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.borderColor
+  },
+  container: {
+    height: 50,
+    paddingHorizontal: 16,
+    backgroundColor: '#fff',
+    gap: 16
+  },
+  more: {
+    paddingLeft: 8,
+    paddingRight: 12,
+    justifyContent: 'center'
+  },
+  moreIcon: {
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: '#bababa',
+    width: 30,
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    marginBottom: 10,
+    shadowColor: '#000',
+    shadowRadius: 2,
+    shadowOpacity: 0.1,
+    elevation: 2,
+    shadowOffset: {
+      width: 2,
+      height: 2
+    }
+  },
+  tab: {
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    minWidth: 60
+  },
+  activeTab: {
+    borderBottomColor: '#000',
+    borderBottomWidth: 2
+  },
+  activeIcon: {
+    color: '#000'
+  },
+  activeText: {
+    color: '#000'
+  },
+  tabIcon: {
+    color: Colors.grey
+  },
+  tabText: {
+    fontSize: 12,
+    color: Colors.grey
+  }
+});

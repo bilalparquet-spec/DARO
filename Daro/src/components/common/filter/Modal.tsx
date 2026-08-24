@@ -1,0 +1,111 @@
+import React, { FC, PropsWithChildren } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Modal, Pressable, StyleSheet, Text, View, ViewStyle } from 'react-native';
+
+import Button from '../Button';
+
+interface FilterModalProps {
+  title: string;
+  visible: boolean;
+  saveDisabled?: boolean;
+  clearDisabled?: boolean;
+  onClear: () => void;
+  onClose: () => void;
+  onSave: () => void;
+  modalStyle?: ViewStyle;
+  contentStyle?: ViewStyle;
+}
+
+const FilterModal: FC<PropsWithChildren<FilterModalProps>> = ({
+  title,
+  children,
+  saveDisabled,
+  clearDisabled,
+  visible,
+  modalStyle,
+  contentStyle,
+  onClear,
+  onClose,
+  onSave
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <Modal
+      onRequestClose={onClose}
+      animationType="fade"
+      visible={visible}
+      transparent
+      statusBarTranslucent
+    >
+      <Pressable style={styles.mask} onPress={onClose} />
+
+      <View style={[styles.content, modalStyle]}>
+        <View style={styles.header}>
+          <Text style={styles.title}>{title}</Text>
+          <Pressable style={styles.close} disabled={clearDisabled} onPress={onClear}>
+            <Text
+              style={{
+                color: clearDisabled ? '#999' : '#333'
+              }}
+            >
+              {t('common.clear')}
+            </Text>
+          </Pressable>
+        </View>
+        <View style={[styles.contentContainer, contentStyle]}>{children}</View>
+
+        <View style={styles.action}>
+          <Button onPress={onSave} theme="secondary" disabled={saveDisabled}>
+            {t('common.save')}
+          </Button>
+        </View>
+      </View>
+    </Modal>
+  );
+};
+
+export default FilterModal;
+
+const styles = StyleSheet.create({
+  header: {
+    padding: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ebebeb'
+  },
+  action: {
+    padding: 15,
+    borderTopWidth: 1,
+    borderTopColor: '#ebebeb'
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: '700',
+    flex: 1,
+    textAlign: 'center',
+    color: '#333'
+  },
+  close: {
+    position: 'absolute',
+    right: 18
+  },
+  mask: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,.5)',
+    justifyContent: 'flex-end'
+  },
+  content: {
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 100,
+    left: 14,
+    right: 14
+  },
+  contentContainer: {
+    padding: 15
+  }
+});

@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  password  String
+  phone     String?  @unique
+  email     String   @unique
+  img       String?
+  about     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  listings     Listing[]
+  reviews      Review[]
+  reservations Reservation[]
+  wishLists    WishList[]
+}
+
+// listing categories
+model Category {
+  id    String @id @default(cuid())
+  name  String
+  img   String
+  icon  String
+  color String
+
+  listings Listing[]
+}
+
+// reviews
+model Review {
+  id        String   @id @default(cuid())
+  comment   String
+  rating    Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  listingId String
+  userId    String
+
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// listings
+model Listing {
+  id            String   @id @default(cuid())
+  title         String
+  description   String
+  imgs          String[]
+  roomCount     Int
+  bathRoomCount Int
+  bedCount      Int
+  guestCount    Int
+  rating        Float
+  price         Int
+  createdAt     DateTime @default(now())
+
+  categoryId String
+  userId     String
+
+  category     Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reviews      Review[]
+  reservations Reservation[]
+}
+
+// reservations
+model Reservation {
+  id         String   @id @default(cuid())
+  startDate  DateTime
+  endDate    DateTime
+  guestCount Int
+  totalPrice Int
+  createdAt  DateTime @default(now())
+
+  listingId String
+  userId    String
+
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model WishList {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+
+  userId String
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wishItems WishItem[]
+}
+
+model WishItem {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  note      String?
+
+  listingId  String
+  wishListId String
+
+  wishList WishList @relation(fields: [wishListId], references: [id], onDelete: Cascade)
+}
